@@ -202,6 +202,13 @@ if node['rabbitmq']['cluster'] && (node['rabbitmq']['erlang_cookie'] != existing
   end
 end
 
-service node['rabbitmq']['service_name'] do
-  action [:enable, :start]
+if node['rabbitmq']['job_control'] == 'none'
+  service node['rabbitmq']['service_name'] do
+    supports :status => true, :restart => true, :reload => true
+    action   :start
+  end
+else
+  service node['rabbitmq']['service_name'] do
+    action [:enable, :start]
+  end
 end
