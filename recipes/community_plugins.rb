@@ -21,6 +21,13 @@
 
 include_recipe 'rabbitmq::default'
 
+# Plugin folder
+directory "/usr/lib/rabbitmq/lib/rabbitmq_server-#{node['rabbitmq']['version']}/plugins" do
+  mode 0755
+  recursive true
+  action :create
+end
+
 node['rabbitmq']['community_plugins'].each do |plugin, download_url|
   # This will only work for deb/rpm installations, such as Ubuntu, Fedora and CentOS
   # List of installation directory per installation method: https://www.rabbitmq.com/installing-plugins.html
